@@ -1,0 +1,7 @@
+gspread==6.0.2
+google-oauth2-service-account==0.1.1
+pandas==2.2.1
+numpy==1.26.4
+scikit-learn==1.4.1.post1
+skl2onnx==1.16.0
+onnx==1.15.0

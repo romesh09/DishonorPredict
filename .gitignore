@@ -1,0 +1,28 @@
+# ====================================================================
+# 1. SECURITY & CREDENTIALS (NEVER EXPOSE THESE)
+# ====================================================================
+# Blocks any local copy of your Google Cloud Service Account JSON keys
+*.json
+# Blocks local environment variable configuration files
+*.env
+
+# ====================================================================
+# EXCEPTION: ALLOW ESSENTIAL METADATA
+# ====================================================================
+# Since we blocked all *.json files above, we must create an explicit 
+# exception so Git allows your ONNX feature map metadata through.
+!prediction service/artifacts/model_metadata.json
+
+# ====================================================================
+# 2. PYTHON RUNTIME & CACHES
+# ====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# ====================================================================
+# 3. OPERATIONAL SYSTEM FILES
+# ====================================================================
+Thumbs.db
+.DS_Store
