@@ -1,0 +1,39 @@
+name: Automated Dishonor Predictions Daily Run
+
+# 1. Define when this automation should trigger
+on:
+  schedule:
+    # This runs the script automatically every single day at 06:00 UTC (11:30 AM IST)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    # This adds a manual "Run workflow" button in the GitHub UI so you can trigger it instantly anytime
+
+jobs:
+  prediction-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step A: Check out your repository files onto the GitHub cloud runner
+    - name: Checkout Repository Code
+      uses: actions/checkout@v4
+
+    # Step B: Set up a dedicated Python environment
+    - name: Initialize Python Runtime
+      uses: actions/setup-python@v5
+      with:
+        python-python: '3.10'
+        cache: 'pip'
+
+    # Step C: Install the exact packages required to parse your ONNX models
+    - name: Install Execution Dependencies
+      run: |
+        pip install pandas numpy gspread onnxruntime google-oauth2-tool
+
+    # Step D: Execute your inference script inside the runner environment
+    - name: Execute Live Inference Pipeline
+      env:
+        # Securely map your hidden repository secret to an environment variable
+        GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
+      run: |
+        # Adjust this line to target the exact path where your inference python script lives
+        python "prediction service/run_batch.py"
