@@ -1,2 +1,0 @@
-# DishonorPredict
-predicts cheque dishonor
