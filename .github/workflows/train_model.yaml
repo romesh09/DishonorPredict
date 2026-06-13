@@ -1,0 +1,48 @@
+name: Model Training and Artifact Compilation Pipeline
+
+on:
+  workflow_dispatch: # Allows manual triggers via the "Run workflow" button
+  schedule:
+    - cron: '0 0 1 * *' # Automatically retrains on the 1st of every month at midnight UTC
+
+jobs:
+  train-job:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed so GitHub can commit the generated models back to your repo
+
+    steps:
+    - name: Checkout Repository Code
+      uses: actions/checkout@v4
+
+    - name: Initialize Python Runtime
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install Training Dependencies
+      run: |
+        pip install pandas numpy gspread scikit-learn skl2onnx google-oauth2-tool
+
+    # Changed: Target your script inside the new 'train' directory
+    - name: Run Training Script
+      env:
+        GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
+      run: |
+        python "train/train.py"
+
+    - name: Commit and Push Compiled Artifacts
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Track the artifacts folder for any new changes
+        git add "prediction service/artifacts/*"
+        
+        if git diff-index --quiet HEAD; then
+          echo "No artifact changes detected. Skipping repository push."
+        else
+          git commit -m "chore: automated pipeline refresh of model weights & metadata mappings"
+          git push
+        fi
