@@ -36,4 +36,4 @@ jobs:
         GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
       run: |
         # Adjust this line to target the exact path where your inference python script lives
-        python "prediction service/run_batch.py"
+        python "prediction service/predict.py"
