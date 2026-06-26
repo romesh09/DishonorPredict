@@ -7,7 +7,7 @@ import onnxruntime as rt
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from google.oauth2.service_account import Credentials
 
-!pip install onnxruntime # Install onnxruntime for ONNX model inference
+
 
 app = FastAPI(title="RA16 ONNX Live Inference Service")
 
