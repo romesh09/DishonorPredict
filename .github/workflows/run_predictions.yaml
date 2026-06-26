@@ -24,11 +24,11 @@ jobs:
         python-python: '3.10'
         cache: 'pip'
 
-    # Step C: Install the exact packages required from requirements.txt
+    # Step C: Install the exact packages required to parse your ONNX models
     - name: Install Execution Dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r "prediction service/requirements.txt"
+        pip install pandas numpy gspread onnxruntime google-oauth2-tool
+
     # Step D: Execute your inference script inside the runner environment
     - name: Execute Live Inference Pipeline
       env:
