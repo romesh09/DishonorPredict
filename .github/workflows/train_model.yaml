@@ -23,7 +23,8 @@ jobs:
 
     - name: Install Training Dependencies
       run: |
-        pip install pandas numpy gspread scikit-learn skl2onnx google-oauth2-tool
+        python -m pip install --upgrade pip
+        pip install -r "train/requirements.txt"
 
     # Changed: Target your script inside the new 'train' directory
     - name: Run Training Script
